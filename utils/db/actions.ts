@@ -1,13 +1,13 @@
 import { config } from "dotenv";
+import { ethers } from "ethers";
 config();
 
-import { db } from "./dbConfig";
-import { Users, Webpages, Tokens, Deployments } from "./schema";
-import { eq, sql, desc } from "drizzle-orm";
 import { create } from "@web3-storage/w3up-client";
-import { ethers } from "ethers";
-import WebpageStorageABI from "../WebpageStorage.json";
+import { desc, eq } from "drizzle-orm";
 import * as Name from "w3name";
+import WebpageStorageABI from "../WebpageStorage.json";
+import { db } from "./dbConfig";
+import { Deployments, Tokens, Users, Webpages } from "./schema";
 
 console.log("ETHEREUM_RPC_URL:", process.env.ETHEREUM_RPC_URL);
 console.log("PRIVATE_KEY:", process.env.PRIVATE_KEY);
@@ -16,26 +16,39 @@ let web3StorageClient: any;
 let contract: ethers.Contract;
 
 export async function initializeClients(userEmail: string) {
-  web3StorageClient = await create();
+  try {
+    web3StorageClient = await create();
+    
+    // First check if we're already authenticated
+    const spaces = await web3StorageClient.spaces();
+    if (spaces.length > 0) {
+      await web3StorageClient.setCurrentSpace(spaces[0].did());
+      return;
+    }
 
-  // Authenticate and select a space using the user's email
-  await web3StorageClient.login(userEmail);
-  const spaces = await web3StorageClient.spaces();
-  if (spaces.length > 0) {
-    await web3StorageClient.setCurrentSpace(spaces[0].did());
-  } else {
-    throw new Error("No spaces available. Please create a space first.");
+    // If not, authenticate
+    await web3StorageClient.login(userEmail);
+    const space = await web3StorageClient.createSpace('web 3 deployer-space');
+    await space.save();
+    await web3StorageClient.setCurrentSpace(space.did());
+    
+    // Add your storage provider if needed
+    await web3StorageClient.setStorageProvider(
+      'did:web:web3.storage' // or your preferred provider
+    );
+
+  } catch (error) {
+    console.error("Error initializing Web3.Storage client:", error);
+    throw error;
   }
 
-  const provider = new ethers.providers.JsonRpcProvider(
-    "https://pre-rpc.bt.io/"
-  );
+  const provider = new ethers.JsonRpcProvider("https://pre-rpc.bt.io/");
   const signer = new ethers.Wallet(
-    "2f34d72c40a47e574ed54bbd14723d7753e8cf53434a180f67ef2f73187ef811",
+    "Metamask Wallet",
     provider
   );
   contract = new ethers.Contract(
-    "0x4eEAEB9C96951Fc1BE43f34c42A002B58FB774Ff",
+    "Metamask Contact",
     WebpageStorageABI.abi,
     signer
   );

@@ -1,17 +1,5 @@
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Menu, LogIn, LogOut } from "lucide-react";
-import { usePrivy } from "@privy-io/react-auth";
-import { useEffect, useState } from "react";
-import { createOrUpdateUser } from "@/utils/db/actions";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -19,7 +7,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { createOrUpdateUser } from "@/utils/db/actions";
+import { usePrivy } from "@privy-io/react-auth";
+import { LogIn, LogOut, Menu } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const { login, logout, authenticated, user } = usePrivy();
@@ -41,20 +41,27 @@ export default function Navbar() {
 
   console.log("all about the users", user);
 
+  // In Navbar.tsx
   const handleUserAuthenticated = async () => {
-    if (user && user.wallet?.address) {
-      try {
-        await createOrUpdateUser(
-          user.wallet.address,
-          user.email?.address || ""
-        );
-        const hasClosedModal = localStorage.getItem("emailConfirmModalClosed");
-        if (!hasClosedModal) {
-          setShowEmailConfirmModal(true);
-        }
-      } catch (error) {
-        console.error("Error updating user information:", error);
+    if (!user || !user.wallet?.address) return;
+
+    try {
+      // Initialize clients first
+      if (user.email?.address) {
+        //await initializeClients(user.email.address);
       }
+
+      // Then create/update user
+      const dbUser = await createOrUpdateUser(
+        user.wallet.address,
+        user.email?.address || ""
+      );
+
+      if (dbUser && !user.email?.address) {
+        setShowEmailConfirmModal(true);
+      }
+    } catch (error) {
+      console.error("Error in user authentication flow:", error);
     }
   };
 
@@ -77,12 +84,12 @@ export default function Navbar() {
         <Link href="/" className="flex items-center">
           <Image
             src="/svg/lock-square-rounded.svg"
-            alt="HTTP3 logo"
+            alt="web 3 deployer logo"
             width={40}
             height={40}
             priority
           />
-          <span className="ml-2 text-xl font-bold">HTTP3</span>
+          <span className="ml-2 text-xl font-bold">web 3 deployer</span>
         </Link>
         <div className="hidden md:flex items-center space-x-4">
           <Link

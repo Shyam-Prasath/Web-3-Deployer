@@ -1,20 +1,13 @@
 "use client";
-import { useState, useEffect } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import DeploymentVisual from "./DeploymentVisual";
-import { Loader2 } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import DeploymentVisual from "./DeploymentVisual";
 
 export default function DeveloperTools() {
   const [code, setCode] = useState(`
@@ -163,7 +156,7 @@ export default function DeveloperTools() {
     // Simulate deployment process
     await new Promise((resolve) => setTimeout(resolve, 2000));
     setDeployedUrl(
-      `https://http3.io/${Math.random().toString(36).substring(7)}`
+      `https://web 3 deployer.io/${Math.random().toString(36).substring(7)}`
     );
     setIsDeploying(false);
   };
@@ -193,24 +186,6 @@ export default function DeveloperTools() {
         Deploy Your Website on Smart Contracts
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card className="bg-secondary relative overflow-hidden">
-          <div className="absolute inset-0 bg-primary/10 backdrop-blur-sm flex items-center justify-center">
-            <span className="text-lg font-semibold text-primary">
-              Coming Soon
-            </span>
-          </div>
-          <CardHeader>
-            <CardTitle>Smart Contract Deployment</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <pre className="bg-background p-4 rounded-md opacity-50">
-              <code>$ http3 deploy ./my-website</code>
-            </pre>
-            <p className="mt-4 text-sm text-muted-foreground opacity-50">
-              Deploy your website directly to the blockchain using our CLI tool.
-            </p>
-          </CardContent>
-        </Card>
         <Card className="bg-secondary">
           <CardHeader>
             <CardTitle>Instant Preview</CardTitle>
@@ -293,7 +268,7 @@ export default function DeveloperTools() {
                   Deploying...
                 </>
               ) : (
-                "Deploy to HTTP3"
+                "Deploy to web 3 deployer"
               )}
             </Button>
           </div>

@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 
 interface SidebarProps {
   items: {
@@ -20,11 +20,11 @@ export function Sidebar({ items, activeItem, setActiveItem }: SidebarProps) {
         <Link href="/" className="flex items-center space-x-2">
           <Image
             src="/svg/lock-square-rounded.svg"
-            alt="HTTP3 logo"
+            alt="Web 3 Deployer logo"
             width={32}
             height={32}
           />
-          <span className="text-xl font-bold">HTTP3</span>
+          <span className="text-xl font-bold">Web 3 Deployer</span>
         </Link>
       </div>
       <nav className="flex-1 p-4">
@@ -47,7 +47,7 @@ export function Sidebar({ items, activeItem, setActiveItem }: SidebarProps) {
       </nav>
       <div className="p-4 border-t border-[#18181b]">
         <p className="text-sm text-gray-500">
-          © 2024 HTTP3. All rights reserved.
+          © 2025 Web 3 Deployer <p className="text-xl font-bold">Revanth 💕 ❤️ Bala </p>
         </p>
       </div>
     </div>

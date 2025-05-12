@@ -1,12 +1,11 @@
 "use client";
+import Navbar from "@/components/Navbar";
 import { PrivyProvider } from "@privy-io/react-auth";
+import { GeistSans } from "geist/font/sans";
 import localFont from "next/font/local";
-import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Navbar from "@/components/Navbar";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
+import "./globals.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,7 +29,7 @@ export default function RootLayout({
       // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <PrivyProvider
-          appId="cm1afgoqj0443tpxkbkmbe9ha"
+          appId="cm7pqimec02ecgh5fncpapns8"
           config={{
             appearance: {
               theme: "dark",

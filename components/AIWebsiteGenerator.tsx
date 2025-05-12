@@ -1,9 +1,9 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
+import { useState } from "react";
 
 export function AIWebsiteGenerator({
   onDeploy,
@@ -17,6 +17,10 @@ export function AIWebsiteGenerator({
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
   const [domain, setDomain] = useState("");
+  
+  const [isUploading, setIsUploading] = useState(false);
+  const [ipfsUrl, setIpfsUrl] = useState("");
+  const [ipfsError, setIpfsError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,6 +40,43 @@ export function AIWebsiteGenerator({
       setError("Failed to generate website. Please try again.");
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const handleUploadToIPFS = async () => {
+    // 🛑 Validate domain and content
+    if (!domain.trim() || !generatedCode.trim()) {
+      setIpfsError("Please fill both Domain and Generated Code before uploading.");
+      setIpfsUrl(""); // Clear previous IPFS link if any
+      return;
+    }
+
+    try {
+      setIpfsError("");
+      setIsUploading(true);
+
+      const blob = new Blob([generatedCode], { type: "text/html" });
+      const formData = new FormData();
+      formData.append("file", blob, "website.html");
+
+      const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
+        method: "POST",
+        headers: {
+          pinata_api_key: "Pinata Key",
+          pinata_secret_api_key: "Pinata secret Key",
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (data?.IpfsHash) {
+        setIpfsUrl(`https://gateway.pinata.cloud/ipfs/${data.IpfsHash}`);
+      }
+    } catch (error) {
+      console.error("IPFS Upload Failed:", error);
+      setIpfsError("IPFS Upload Failed. Try again.");
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -121,20 +162,39 @@ export function AIWebsiteGenerator({
               />
             </div>
           </div>
+          {/* 🆕 Upload to IPFS Button */}
           <Button
-            onClick={() => onDeploy(domain, generatedCode)}
-            disabled={isDeploying || !domain || !generatedCode}
-            className="bg-green-600 hover:bg-green-500 text-white"
-          >
-            {isDeploying ? (
-              <>
-                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                Deploying...
-              </>
-            ) : (
-              "Deploy AI-Generated Website"
+              onClick={handleUploadToIPFS}
+              disabled={isUploading || !domain || !generatedCode}
+              className="bg-green-600 hover:bg-green-500 text-white"
+            >
+              {isUploading ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Uploading to IPFS...
+                </>
+              ) : (
+                "Upload to IPFS"
+              )}
+            </Button>
+
+            {/* 🛑 IPFS Upload Error */}
+            {ipfsError && <p className="text-red-400">{ipfsError}</p>}
+
+            {/* ✅ IPFS Uploaded Link */}
+            {ipfsUrl && (
+              <p className="text-white font-bold break-words">
+                IPFS Link:{" "}
+                <a
+                  href={ipfsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline text-green-400"
+                >
+                  {ipfsUrl}
+                </a>
+              </p>
             )}
-          </Button>
         </div>
       )}
     </div>

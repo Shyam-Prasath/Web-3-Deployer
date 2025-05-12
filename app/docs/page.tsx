@@ -1,17 +1,14 @@
 "use client";
-import Link from "next/link";
-import Navbar from "@/components/Navbar";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import {
-  ArrowRight,
-  Globe,
-  Cpu,
-  Zap,
-  Search,
   BarChart,
+  Cpu,
+  Globe,
   Network,
+  Search,
+  Zap
 } from "lucide-react";
+import Link from "next/link";
 
 export default function DocsPage() {
   return (
@@ -144,7 +141,7 @@ export default function DocsPage() {
               <Card className="bg-[#1a1a1a] border-gray-800">
                 <CardContent className="p-4">
                   <p className="text-white">
-                    To get started with HTTP3, you'll need to create an account.
+                    To get started with web 3 deployer, you'll need to create an account.
                     Use the 'Login' button in the navbar to connect with your
                     Web3 wallet for a seamless blockchain experience.
                   </p>
@@ -167,7 +164,7 @@ export default function DocsPage() {
                     <li>Click on the "Deploy" tab</li>
                     <li>Enter your domain and website content</li>
                     <li>
-                      Click "Deploy to HTTP3" and confirm the transaction in
+                      Click "Deploy to web 3 deployer" and confirm the transaction in
                       your wallet
                     </li>
                     <li>Wait for the deployment to complete</li>
@@ -184,7 +181,7 @@ export default function DocsPage() {
               <Card className="bg-[#1a1a1a] border-gray-800">
                 <CardContent className="p-4">
                   <p className="mb-4 text-white">
-                    HTTP3 provides tools to manage your website deployments:
+                    web 3 deployer provides tools to manage your website deployments:
                   </p>
                   <ul className="list-disc list-inside space-y-2 text-white">
                     <li>View all your deployed websites in the Dashboard</li>

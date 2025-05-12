@@ -1,11 +1,12 @@
-export default {
-  dialect: "postgresql",
+import { defineConfig } from 'drizzle-kit';
+
+export default defineConfig({
   schema: "./utils/db/schema.ts",
   out: "./drizzle",
-
+  driver: 'pg',
   dbCredentials: {
-    url: "postgresql://neondb_owner:xyDszWq49UJh@ep-soft-violet-a5vv99sd.us-east-2.aws.neon.tech/http3?sslmode=require",
-    connectionString:
-      "postgresql://neondb_owner:xyDszWq49UJh@ep-soft-violet-a5vv99sd.us-east-2.aws.neon.tech/http3?sslmode=require",
+    connectionString: "database url"
   },
-};
+  verbose: true,
+  strict: true
+});

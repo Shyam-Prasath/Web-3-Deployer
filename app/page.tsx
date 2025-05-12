@@ -1,36 +1,21 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
 import DeveloperTools from "@/components/DeveloperTools";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Button } from "@/components/ui/button";
 import UserAccess from "@/components/UserAccess";
+import { createWebpage } from "@/utils/db/actions";
 import {
   ArrowRight,
-  Code,
-  Globe,
-  Zap,
-  Menu,
-  Shield,
   BarChart,
-  Coins,
+  Cpu,
+  Globe,
   Network,
   Search,
-  Cpu,
+  Zap
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { ThemeProvider } from "@/components/theme-provider";
-import { ModeToggle } from "@/components/mode-toggle";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Loader2 } from "lucide-react";
-import { storeWebpageOnChain } from "@/utils/db/actions";
-import { createWebpage } from "@/utils/db/actions";
 
 export default function Home() {
   const features = [
@@ -84,7 +69,7 @@ export default function Home() {
       const { txHash, cid } = await createWebpage("4ffdsfdf", domain, content); // Assuming userId 1 for now
 
       // Set the deployed URL
-      setDeployedUrl(`https://http3.io/${domain}`);
+      setDeployedUrl(`https://Web3.io/${domain}`);
 
       console.log(
         `Deployed successfully. Transaction hash: ${txHash}, CID: ${cid}`
@@ -104,7 +89,7 @@ export default function Home() {
           <Image
             className="mx-auto text-white mb-4"
             src="/svg/lock-square-rounded.svg"
-            alt="HTTP3 logo"
+            alt="Web 3 Deployer logo"
             width={70}
             height={38}
             priority
@@ -116,7 +101,7 @@ export default function Home() {
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Host your legacy websites like calculators and unit converters on
             the blockchain, absolutely free! No hosting fees, no expiration
-            dates. Preserve your simple web projects forever with HTTP3's
+            dates. Preserve your simple web projects forever with Web 3 Deployer's
             decentralized hosting.
           </p>
           <Link href={"/dashboard"}>
@@ -156,7 +141,7 @@ export default function Home() {
         </main>
 
         <footer className="mt-16 text-center text-sm text-muted-foreground">
-          <p>&copy; 2024 HTTP3. All rights reserved.</p>
+          <p>&copy; 2025 Web 3 Deployer <p className="text-xl font-bold">Revanth ❤️ 💕Bala</p></p>
         </footer>
       </div>
     </ThemeProvider>

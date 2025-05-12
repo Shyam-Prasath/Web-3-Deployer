@@ -1,13 +1,12 @@
-import React from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import {
   Calculator,
-  Ruler,
-  DollarSign,
-  Globe,
-  Gamepad,
   Coins,
+  DollarSign,
+  Gamepad,
+  Ruler
 } from "lucide-react";
+import React from "react";
 
 interface ExampleCardProps {
   icon: React.ReactNode;
@@ -25,42 +24,42 @@ export function ExampleWebsites({
   return (
     <div className="w-full max-w-6xl">
       <h2 className="text-2xl font-semibold text-white mb-8">
-        Example Websites
+        Deployed Websites
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <ExampleCard
           icon={<Calculator className="w-6 h-6" />}
           title="Calculator"
           // description="A simple calculator built with HTML, CSS, and JavaScript."
-          url="https://bafkreicxjg7dxqftonwmfvrokym6q5isbs2i35spht6hy2pt37jfuvp2v4.ipfs.dweb.link/"
+          url="https://ipfs.io/ipfs/QmczJxoJVsYn3mwD361kKfWHce9bDzScAFujoyRT6gd6YQ"
           showDescription={showDescription}
         />
         <ExampleCard
           icon={<Ruler className="w-6 h-6" />}
           title="Unit Converter"
           // description="A basic unit converter for length, weight, and volume."
-          url="https://bafkreif2zw75vkfhxgap2itcliamfc3iz73xczzper4iylagg7xuijyk2m.ipfs.dweb.link"
+          url="https://ipfs.io/ipfs/QmTfgFPbvYrbiAdC6HJH2XbATx7bNdXg8PTuLYqvDaAXPR"
           showDescription={showDescription}
         />
         <ExampleCard
           icon={<DollarSign className="w-6 h-6" />}
-          title="Currency Conv."
+          title="Currency Convertor"
           // description="A currency converter that fetches real-time exchange rates."
-          url="https://bafkreighge4wwedrf7tssbmctbkqcxsh6z64lha7ximkkq6lreqxzsg7fq.ipfs.dweb.link/"
+          url="https://ipfs.io/ipfs/QmbEToJbXiEp91sQSvmMuh2JBwu82oSjFX9C2ieJicf3LX"
           showDescription={showDescription}
         />
         <ExampleCard
           icon={<Gamepad className="w-6 h-6" />}
           title="Game"
           // description="A decentralized blog built on IPFS and Ethereum."
-          url="https://bafkreifimbxi546ziwdrtglcxq5dsvocwqfzed2mn5ohahx5cpktxpmjne.ipfs.dweb.link/"
+          url="https://ipfs.io/ipfs/QmP26UgSt2tuh2LDpNTj1uAJLzxT8SZuCtm9gEScABwS68"
           showDescription={showDescription}
         />
         <ExampleCard
           icon={<Coins className="w-6 h-6" />}
           title=" Wallet Balance"
           // description="A decentralized blog built on IPFS and Ethereum."
-          url="https://bafkreifebqrbmr7aq6pz6kkkatjwj7mj75fw2m2bjjbueammfwj7yue2aa.ipfs.dweb.link/"
+          url="https://ipfs.io/ipfs/QmawKH6dZejWKEaSYNXZncuDzMBujwcBobGaM3UcdHh4dN"
           showDescription={showDescription}
         />
       </div>

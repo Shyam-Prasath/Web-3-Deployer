@@ -1,61 +1,53 @@
 "use client";
-import { useState, useEffect, useMemo } from "react";
-import Link from "next/link";
+
+
+import { AIWebsiteGenerator } from "@/components/AIWebsiteGenerator";
+import { DecentralizedCDN } from "@/components/DecentralizedCDN";
+import DeploymentVisual from "@/components/DeploymentVisual";
+import { ExampleWebsites } from "@/components/ExampleWebsites";
+import { SearchEngine } from "@/components/SearchEngine";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Card,
-  CardHeader,
-  CardTitle,
   CardContent,
   CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
-import { Bar, BarChart, CartesianGrid, XAxis, Cell } from "recharts";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Sidebar } from "@/components/ui/sidebar";
+import { Textarea } from "@/components/ui/textarea";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import {
-  Globe,
-  Shield,
-  Zap,
-  Activity,
-  DollarSign,
-  Users,
-  Clock,
-  Loader2,
-  Layout,
-  Rocket,
-  GitBranch,
-  Cpu,
-  Network,
-  Search,
-} from "lucide-react";
-import { Progress } from "@/components/ui/progress";
-import Navbar from "@/components/Navbar";
-import DeploymentVisual from "@/components/DeploymentVisual";
-import { Label } from "@/components/ui/label";
-import {
-  getUserIdByEmail,
   createWebpageWithName,
-  updateWebpageContent,
-  initializeClients,
+  getUserIdByEmail,
   getUserWebpages,
   getWebpageContent,
+  initializeClients,
+  updateWebpageContent,
 } from "@/utils/db/actions";
 import { usePrivy } from "@privy-io/react-auth";
-import CICDManager from "@/components/CICDManager";
-import { email } from "@web3-storage/w3up-client/types";
+import {
+  Activity,
+  Clock,
+  Cpu,
+  GitBranch,
+  Globe,
+  Layout,
+  Network,
+  Rocket,
+  Search
+} from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AIWebsiteGenerator } from "@/components/AIWebsiteGenerator";
-import { DecentralizedCDN } from "@/components/DecentralizedCDN";
-import { Sidebar } from "@/components/ui/sidebar";
-import { SearchEngine } from "@/components/SearchEngine";
-import { ExampleWebsites } from "@/components/ExampleWebsites";
-import SmartContractDeployer from "@/components/SmartContractDeployer";
+import { useEffect, useMemo, useState } from "react";
+import { Bar, BarChart, XAxis } from "recharts";
 // Add this type definition
 type Webpage = {
   webpages: {
@@ -71,6 +63,7 @@ type Webpage = {
     transactionHash: string;
   } | null;
 };
+
 
 const truncateUrl = (url: string, maxLength: number = 30) => {
   if (!url) return "";
@@ -90,7 +83,7 @@ export default function Dashboard() {
     {
       id: 1,
       name: "My First Site",
-      url: "https://http3.io/abc123",
+      url: "https://web 3 deployer.io/abc123",
       chain: "Ethereum",
       status: "Active",
       traffic: 1500,
@@ -100,7 +93,7 @@ export default function Dashboard() {
     {
       id: 2,
       name: "Blog",
-      url: "https://http3.io/def456",
+      url: "https://web 3 deployer.io/def456",
       chain: "Polygon",
       status: "Active",
       traffic: 3000,
@@ -110,7 +103,7 @@ export default function Dashboard() {
     {
       id: 3,
       name: "DApp Frontend",
-      url: "https://http3.io/ghi789",
+      url: "https://web 3 deployer.io/ghi789",
       chain: "Solana",
       status: "Maintenance",
       traffic: 500,
@@ -135,7 +128,11 @@ export default function Dashboard() {
       { id: 3, type: "Unstake", amount: -50, date: "2023-03-13 14:45" },
     ],
   };
-
+  const IPFS_API = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
+  const PINATA_API_KEY = 'Pinata Key';
+  const PINATA_SECRET_KEY = 'Pinata secret Key';
+  const [ipfsUrl, setIpfsUrl] = useState("");
+  const [ipfsError, setIpfsError] = useState("");
   const [code, setCode] = useState(``);
   const [githubUrl, setGithubUrl] = useState("");
   const [deployedUrl, setDeployedUrl] = useState("");
@@ -427,12 +424,10 @@ export default function Dashboard() {
     { name: "Sites", icon: Layout },
     { name: "Deploy", icon: Rocket },
     { name: "Manage Websites", icon: GitBranch },
-    { name: "Tokens", icon: Zap },
     { name: "AI Website", icon: Cpu },
     { name: "Decentralized CDN", icon: Network },
     { name: "Search Engine", icon: Search },
-    { name: "Example Websites", icon: Globe },
-    { name: "Smart Contracts", icon: Shield },
+    { name: "Deployed Websites", icon: Globe },
   ];
 
   return (
@@ -688,29 +683,65 @@ export default function Dashboard() {
                         className="mt-1 min-h-[200px] font-mono text-sm bg-[#0a0a0a] text-white border-gray-700"
                       />
                     </div>
-                    <Button
-                      onClick={selectedWebpage ? handleUpdate : handleDeploy}
-                      disabled={
-                        isDeploying ||
-                        !domain ||
-                        !content ||
-                        !isInitialized ||
-                        userId === null
-                      }
-                      size="lg"
-                      className="bg-blue-600 hover:bg-blue-500 text-white"
-                    >
-                      {isDeploying ? (
-                        <>
-                          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                          {selectedWebpage ? "Updating..." : "Deploying..."}
-                        </>
-                      ) : selectedWebpage ? (
-                        "Update Website"
-                      ) : (
-                        "Deploy to HTTP3"
-                      )}
-                    </Button>
+                    
+                    {/* 🆕 Upload to IPFS button with validation */}
+          <Button
+            onClick={async () => {
+              if (!domain.trim() || !content.trim()) {
+                setIpfsError("Please fill both Domain and Content before uploading.");
+                setIpfsUrl(""); // Clear previous URL if any
+                return;
+              }
+              try {
+                setIpfsError(""); // Clear error if valid
+                const blob = new Blob([content], { type: 'text/html' });
+                const formData = new FormData();
+                formData.append('file', blob, 'website.html');
+
+                const res = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
+                  method: 'POST',
+                  headers: {
+                    pinata_api_key: 'Pinata Key',
+                    pinata_secret_api_key: 'Pinata secret Key',
+                  },
+                  body: formData,
+                });
+
+                const data = await res.json();
+                if (data?.IpfsHash) {
+                  setIpfsUrl(`https://gateway.pinata.cloud/ipfs/${data.IpfsHash}`);
+                }
+              } catch (error) {
+                console.error('IPFS upload failed:', error);
+                setIpfsError("IPFS Upload Failed. Try again.");
+              }
+            }}
+            size="lg"
+            className="bg-green-600 hover:bg-green-500 text-white"
+          >
+            Upload to IPFS
+          </Button>
+
+          {/* Display error if any */}
+          {ipfsError && (
+            <p className="text-red-400 mt-2">{ipfsError}</p>
+          )}
+
+          {/* Display link if uploaded */}
+          {ipfsUrl && (
+              <p className="text-white font-bold break-words">
+                IPFS Link:{" "}
+                <a
+                  href={ipfsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline text-green-400"
+                >
+                  {ipfsUrl}
+                </a>
+              </p>
+            )}
+          {/* End of new addition */}
                     {deploymentError && (
                       <p className="text-red-400 mt-2">{deploymentError}</p>
                     )}
@@ -751,7 +782,6 @@ export default function Dashboard() {
               </h2>
               <p className="mt-2 mb-6 text-gray-400">
                 Note: This section allows manual management of your websites.
-                Automated CI/CD features are coming soon!
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {userWebpages.map((webpage) => (
@@ -809,19 +839,6 @@ export default function Dashboard() {
               </div>
             </div>
           )}
-
-          {activeTab === "Tokens" && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card className="bg-[#0a0a0a] border-[#18181b]">
-                <CardHeader>
-                  <CardTitle className="text-2xl text-white">Tokens</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-lg text-gray-400">Coming soon</p>
-                </CardContent>
-              </Card>
-            </div>
-          )}
           {activeTab === "AI Website" && (
             <Card className="bg-[#0a0a0a] border-[#18181b]">
               <CardHeader>
@@ -839,6 +856,7 @@ export default function Dashboard() {
                     Deploying AI-generated website...
                   </p>
                 )}
+                
                 {aiDeploymentStatus.error && (
                   <p className="mt-4 text-red-400">
                     {aiDeploymentStatus.error}
@@ -860,7 +878,7 @@ export default function Dashboard() {
                         {aiDeploymentStatus.deployedUrl}
                       </a>
                     </p>
-                    <p className="text-white">
+                    <p className="text-white break-words">
                       IPFS URL:{" "}
                       <a
                         href={aiDeploymentStatus.ipfsUrl}
@@ -871,6 +889,7 @@ export default function Dashboard() {
                         {aiDeploymentStatus.ipfsUrl}
                       </a>
                     </p>
+                    
                     <DeploymentVisual
                       deployedUrl={aiDeploymentStatus.deployedUrl}
                     />
@@ -898,7 +917,7 @@ export default function Dashboard() {
 
           {activeTab === "Search Engine" && <SearchEngine />}
 
-          {activeTab === "Example Websites" && <ExampleWebsites />}
+          {activeTab === "Deployed Websites" && <ExampleWebsites />}
 
           {activeTab === "Smart Contracts" && (
             <Card className="bg-[#0a0a0a] border-[#18181b]">
